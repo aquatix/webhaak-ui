@@ -16,16 +16,13 @@
             {{ project.title }}
           </div>
           <div class="card-section">
-            <p>{{ project.appkey }}.</p>
-            <div v-for="trigger in project.triggers">
-                <a :href="trigger.url">{{ trigger.title }}</a>
-            </div>
+            <p>{{ project.appkey }}</p>
+            <button v-for="trigger in project.triggers" class="button" style="margin-right: 1em;" @click="doTrigger(trigger.url)">{{ trigger.title }}</button>
           </div>
         </div>
       </div>
 
-      <hr>
-      <button class="button" style="display:block;margin:auto;" @click="getTriggersViaREST">Get triggers via REST</button>
+      <button class="button" style="display:block;margin:auto;" @click="getTriggersViaREST">Refresh triggers</button>
     </div>
   </body>
   <script>
@@ -57,7 +54,11 @@
           getTriggersViaREST: function() {
             axios.get(webhaakURL + "/admin/" + secretKey + "/list")
               .then(response => {this.apps = response.data})
-          }
+          },
+          doTrigger: function(url) {
+            axios.get(url)
+              .then(response => {console.log(response.data)})
+          },
         }
       });
 
