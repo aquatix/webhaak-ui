@@ -18,7 +18,7 @@
           <div class="card-section">
             <p>{{ project.appkey }}.</p>
             <div v-for="trigger in project.triggers">
-              {{ trigger.title }} - {{ trigger.triggerkey }}
+                <a :href="trigger.url">{{ trigger.title }}</a>
             </div>
           </div>
         </div>
@@ -49,7 +49,9 @@
       var vm = new Vue({
         el: '#app',
         data: {
-          apps: {projects: []}
+            apps: {projects: []},
+            serverURL: webhaakURL,
+            serverKey: secretKey
         },
         methods: {
           getTriggersViaREST: function() {
