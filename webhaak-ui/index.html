@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>webhaak UI</title>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation.min.css">
+  </head>
+  <body>
+    <div class="container" id="app">
+      <h3 class="text-center">webhaak triggers</h3>
+      <div class="columns medium-3" v-for="project in apps.projects">
+        <div class="card">
+          <div class="card-divider">
+            {{ project.title }}
+          </div>
+          <div class="card-section">
+            <p>{{ project.appkey }}.</p>
+            <div v-for="trigger in project.triggers">
+                {{ trigger.title }} - {{ trigger.triggerkey }}
+              </div>
+          </div>
+        </div>
+      </div>
+
+      <hr>
+      <button class="button" style="display:block;margin:auto;" @click="getTriggersViaREST">Get triggers via REST</button>
+    </div>
+  </body>
+    <script>
+        myStorage = window.localStorage;
+
+        var secretKey = localStorage.getItem('webhaakKey');
+        if (secretKey == null) {
+            alert('secretKey needs to be entered');
+            localStorage.setItem('webhaakKey', '42');
+        }
+
+        var webhaakURL = localStorage.getItem('webhaakURL');
+        if (webhaakURL == null) {
+            alert('webhaakURL needs to be entered');
+            localStorage.setItem('webhaakURL', '42');
+        }
+
+      var vm = new Vue({
+        el: '#app',
+        data: {
+          apps: {projects: []}
+        },
+        methods: {
+          getTriggersViaREST: function() {
+            axios.get(webhaakURL + "/admin/" + secretKey + '/list")
+              .then(response => {this.apps = response.data})
+          }
+        }
+      });
+
+    </script>
+</html>
