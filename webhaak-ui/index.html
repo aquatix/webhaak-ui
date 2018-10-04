@@ -26,6 +26,8 @@
           </div>
         </div>
       </div>
+
+      <button class="button" style="display:block;margin:auto;" @click="forgetServer">Forget server</button>
     </div>
   </body>
   <script>
@@ -75,6 +77,11 @@
           doTrigger: function(url) {
             axios.get(url)
               .then(response => {this.statusMessage = response.data.message})
+          },
+          forgetServer: function() {
+            window.localStorage.removeItem('webhaakURL');
+            window.localStorage.removeItem('webhaakKey');
+            window.localStorage.removeItem('webhaakProjects');
           },
         }
       });
