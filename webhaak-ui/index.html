@@ -5,31 +5,64 @@
     <title>webhaak UI</title>
     <script src="https://unpkg.com/vue"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+
+    <!-- Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="#212121" />
+    <!-- Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="#212121">
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <style>
+            .deletebtn
+            {
+                background-color: red;
+            }
+            .deletebtn:hover
+            {
+                background-color: #ef5350; /* red lighten-1 */
+            }
+        </style>
+
   </head>
-  <body>
+  <body class="grey darken-2 grey-text text-lighten-2">
     <div class="container" id="app">
-      <h3 class="text-center">webhaak triggers</h3>
+      <h1 class="header orange-text">webhaak triggers</h1>
 
-      <p class="text-center">{{ statusMessage }}</p>
-      <button class="button" style="display:block;margin:auto;" @click="getTriggersViaREST">Refresh triggers</button>
-      <hr>
-
-      <div class="columns medium-3" v-for="project in apps.projects">
-        <div class="card">
-          <div class="card-divider">
-            {{ project.title }}
+      <div class="row">
+          <div class="col s12 m12 l12">
+              <div class="card-panel amber darken-1 white-text">
+                  {{ statusMessage }}
+              </div>
           </div>
-          <div class="card-section">
-            <p>{{ project.appkey }}</p>
-            <button v-for="trigger in project.triggers" class="button" style="margin-right: 1em;" @click="doTrigger(trigger.url)">{{ trigger.title }}</button>
-          </div>
-        </div>
       </div>
 
-      <button class="button" style="display:block;margin:auto;" @click="forgetServer">Forget server</button>
+      <div class="row">
+          <div class="col s12 m6 l4" v-for="project in apps.projects">
+              <div class="card grey darken-3">
+                  <div class="card-content">
+                      <span class="card-title">{{ project.title }}</span>
+                      <p style="font-size: .9em;">{{ project.appkey }}</p>
+                  </div>
+                  <div class="card-action">
+                    <button v-for="trigger in project.triggers" class="btn-small waves-effect waves-light" style="margin-right: .5em;" @click="doTrigger(trigger.url)">{{ trigger.title }}</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div class="row">
+          <div class="col s12 m12 l12">
+              <div class="card-panel grey darken-3 white-text">
+                  <button class="btn waves-effect waves-light" @click="getTriggersViaREST">Refresh triggers</button>
+                  <button class="btn waves-effect waves-light deletebtn" @click="forgetServer">Forget server</button>
+              </div>
+          </div>
+      </div>
     </div>
-  </body>
   <script>
         myStorage = window.localStorage;
 
@@ -87,4 +120,5 @@
       });
 
     </script>
+  </body>
 </html>
