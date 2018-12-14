@@ -26,6 +26,11 @@
         {
             background-color: #ef5350; /* red lighten-1 */
         }
+        .card-action .btn-small
+        {
+            margin-right: .5em;
+            margin-top: .5em;
+        }
     </style>
   </head>
   <body class="grey darken-2 grey-text text-lighten-2">
@@ -48,7 +53,7 @@
                       <p style="font-size: .9em;">{{ project.appkey }}</p>
                   </div>
                   <div class="card-action">
-                    <button v-for="trigger in project.triggers" class="btn-small waves-effect waves-light" style="margin-right: .5em;" @click="doTrigger(trigger.url)">{{ trigger.title }}</button>
+                    <button v-for="trigger in project.triggers" class="btn-small waves-effect waves-light" @click="doTrigger(trigger.url)">{{ trigger.title }}</button>
                   </div>
               </div>
           </div>
