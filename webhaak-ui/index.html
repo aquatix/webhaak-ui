@@ -67,10 +67,10 @@
           </div>
       </div>
     </div>
-  <script>
-        myStorage = window.localStorage;
+    <script>
+        let myStorage = window.localStorage;
 
-        var projectsStorage = localStorage.getItem('webhaakProjects');
+        let projectsStorage = localStorage.getItem('webhaakProjects');
         try {
             console.log(JSON.parse(projectsStorage));
             projectsStorage = JSON.parse(projectsStorage);
@@ -83,13 +83,13 @@
         }
 
 
-        var webhaakURL = localStorage.getItem('webhaakURL');
+        let webhaakURL = localStorage.getItem('webhaakURL');
         if (webhaakURL == null) {
             webhaakURL = prompt('URL to webhaak (e.g., https://hook.example.com):');
             localStorage.setItem('webhaakURL', webhaakURL);
         }
 
-        var secretKey = localStorage.getItem('webhaakKey');
+        let secretKey = localStorage.getItem('webhaakKey');
         if (secretKey == null) {
             secretKey = prompt('webhaak secret key:');
             localStorage.setItem('webhaakKey', secretKey);
@@ -98,18 +98,28 @@
         console.log('webhaak secret: ' + secretKey);
         console.log(webhaakURL + "/admin/" + secretKey + "/list");
 
+        let message = 'ready';
+        if (localStorage.getItem('webhaakRefreshedOn') != null) {
+            message = 'Last hooks sync: ' + localStorage.getItem('webhaakRefreshedOn');
+        }
+
       var vm = new Vue({
         el: '#app',
         data: {
             apps: projectsStorage,
             serverURL: webhaakURL,
             serverKey: secretKey,
-            statusMessage: 'ready'
+            statusMessage: message
         },
         methods: {
           getTriggersViaREST: function() {
             axios.get(webhaakURL + "/admin/" + secretKey + "/list")
-              .then(response => {this.apps = response.data; window.localStorage.setItem('webhaakProjects', JSON.stringify(response.data))})
+              .then(response => {
+                  this.apps = response.data;
+                  window.localStorage.setItem('webhaakProjects', JSON.stringify(response.data));
+                  window.localStorage.setItem('webhaakRefreshedOn', new Date().toISOString());
+                  this.statusMessage = 'Hooks synced at ' + localStorage.getItem('webhaakRefreshedOn');
+              })
           },
           getKeyViaREST: function() {
             axios.get(webhaakURL + "/getappkey")
@@ -123,10 +133,10 @@
             window.localStorage.removeItem('webhaakURL');
             window.localStorage.removeItem('webhaakKey');
             window.localStorage.removeItem('webhaakProjects');
+            window.localStorage.removeItem('webhaakRefreshedOn');
           },
         }
       });
-
     </script>
   </body>
 </html>
