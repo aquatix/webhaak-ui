@@ -3,7 +3,9 @@
   <head>
     <meta charset="utf-8">
     <title>webhaak UI</title>
-    <script src="https://unpkg.com/vue"></script>
+    <!--<script src="https://unpkg.com/vue"></script>-->
+    <!--<script src="https://unpkg.com/vue@2.6.14/dist/vue.min.js"></script>-->
+    <script src="https://unpkg.com/vue@2.6.14/dist/vue.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen"/>
@@ -103,7 +105,9 @@
         }
 
       var vm = new Vue({
+      //const vm = Vue.createApp({
         el: '#app',
+        // https://stackoverflow.com/a/70823551 data needs to be adjusted for vue 3
         data: {
             apps: projectsStorage,
             serverURL: webhaakURL,
